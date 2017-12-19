@@ -25,7 +25,7 @@ public class GUI
 
         panel.setLayout(new FlowLayout());
 
-        JButton start = new JButton("Start");
+        JButton start = new JButton("Начало");
         start.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
@@ -35,7 +35,21 @@ public class GUI
             }
         });
         panel.add(start);
-
+        JButton help = new JButton("Правила");
+        help.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                JOptionPane.showMessageDialog(frame, "Число в ячейке показывает, сколько мин скрыто вокруг данной ячейки . Это число поможет понять вам, где находятся безопасные ячейки, а где находятся бомбы.\n" +
+                        "Если рядом с открытой ячейкой есть пустая ячейка, то она откроется автоматически.\n" +
+                        "Если вы открыли ячейку с миной, то игра проиграна..\n" +
+                        "Что бы пометить ячейку, в которой находится бомба, нажмите её правой кнопкой мыши.\n" +
+                        "После того, как вы отметите все мины, можно навести курсор на открытую ячейку и нажать правую и левую кнопку мыши одновременно. Тогда откроются все свободные ячейки вокруг неё\n" +
+                        "Если в ячейке указано число, оно показывает, сколько мин скрыто в восьми ячейках вокруг данной. Это число помогает понять, где находятся безопасные ячейки.\n" +
+                        "Игра продолжается до тех пор, пока вы не откроете все не заминированные ячейки.");
+            }
+        });
+        panel.add(help);
         ez = new JCheckBox("Easy");
         ez.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
@@ -71,9 +85,8 @@ public class GUI
 
 
         frame.getContentPane().add(panel);
-
-        frame.setPreferredSize(new Dimension(400, 80));
-
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setPreferredSize(new Dimension(500, 80));
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);

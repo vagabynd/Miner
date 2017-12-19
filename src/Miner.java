@@ -1,12 +1,20 @@
+
+
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Random;
+import java.util.Timer;
 
 public class Miner extends JFrame {
-    private int bombsNumber, size, markedCount;
+    private int bombsNumber, size, markedCount, time;
     private final int CELL_SIZE = 50;
     private JCell[][] field;
+    JLabel mark = new JLabel("  F - " + markedCount);
+    JLabel timerLabel = new TimerLabel(new Timer());
+    TimerLabel time1 = new TimerLabel(new Timer());
+
 
     public Miner(int size, int number) {
         this.size = size;
@@ -14,7 +22,7 @@ public class Miner extends JFrame {
         markedCount = 0;
 
         generateField();
-        setLayout(new GroupLayout(getContentPane()));
+        setLayout(new GridLayout(size+1,size));
         setBounds(0, 0, CELL_SIZE * size, CELL_SIZE * size + 50);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setVisible(true);
@@ -37,11 +45,12 @@ public class Miner extends JFrame {
                         markedCount++;
                     else
                         markedCount--;
-
+                    remove(mark);
+                    mark = new JLabel("  F - " + markedCount);
+                    add(mark);
                     if (markedCount == bombsNumber)
                         checkForWin();
                 }
-
             System.out.println(cell);
         }
 
@@ -80,7 +89,7 @@ public class Miner extends JFrame {
             for (int y = 0; y < size; y++)
                 if (field[x][y].isBomb())
                     field[x][y].setText("x");
-
+        time = time1.getTime();
         showDialog("Game over.");
     }
 
@@ -89,9 +98,8 @@ public class Miner extends JFrame {
         int response = JOptionPane.showOptionDialog
                 (this, message, "Message", 0, JOptionPane.QUESTION_MESSAGE, null, options, "PHP");
         if (response == 0) {
-            getContentPane().removeAll();
-            setLayout(new GroupLayout(getContentPane()));
-            generateField();
+            dispose();
+            new Miner(this.size,bombsNumber);
         } else
             dispose();
     }
@@ -133,7 +141,12 @@ public class Miner extends JFrame {
                 add(cell);
                 field[x][y] = cell;
             }
-
+        JLabel footer = new JLabel(" x - " + bombsNumber);
+        add(footer);
+        add(mark);
+        add(timerLabel);
+        timerLabel.setFont(new Font(timerLabel.getFont().getFontName(), timerLabel.getFont().getStyle(), 13));
+        add(timerLabel);
         while (k < bombsNumber)
             if (field[r.nextInt(size)][r.nextInt(size)].setBomb())
                 k++;
