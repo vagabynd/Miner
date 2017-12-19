@@ -81,10 +81,15 @@ public class Miner extends JFrame {
                 if (field[x][y].isBomb() && !field[x][y].isMarked())
                     return;
         time = time1.getTime();
-        lastTime = file.fileReader();
+        if (bombsNumber == 10)         lastTime = file.fileReader("recEazy.txt");
+        if (bombsNumber == 40)         lastTime = file.fileReader("recNorm.txt");
+        if (bombsNumber == 100)         lastTime = file.fileReader("recHard.txt");
         if (time <= lastTime) {
             showDialog("Congratulations. Новый Рекорд: " + time + " секунд");
-            file.fileWriter(time);
+            if (bombsNumber == 10)         file.fileWriter(time,"recEazy.txt");
+            if (bombsNumber == 40)         file.fileWriter(time,"recNorm.txt");
+            if (bombsNumber == 100)        file.fileWriter(time,"recHard.txt");
+
         }
         else {
             showDialog("Congratulations. Рекорд: " + lastTime + " секунд");

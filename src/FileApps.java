@@ -5,8 +5,8 @@ import java.util.logging.Logger;
 
 public class FileApps {
     private String time;
-    public void fileWriter(int time) {
-        try(FileWriter writer = new FileWriter("rec.txt", false))
+    public void fileWriter(int time, String filename) {
+        try(FileWriter writer = new FileWriter(filename, false))
         {
             // запись всей строки
             String text = "" + time;
@@ -17,10 +17,10 @@ public class FileApps {
             System.out.println(ex.getMessage());
         }
     }
-    public int fileReader() {
+    public int fileReader(String filename) {
         try {
             final DataInputStream dis = new DataInputStream(
-                    new FileInputStream( "rec.txt"));
+                    new FileInputStream( filename));
             final byte[] bytes = new byte[dis.available()];
             dis.readFully(bytes);
             final String fileContents = new String(bytes, 0, bytes.length);
