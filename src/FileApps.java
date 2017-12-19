@@ -1,4 +1,8 @@
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class FileApps {
     private String time;
     public void fileWriter(int time) {
@@ -13,18 +17,21 @@ public class FileApps {
             System.out.println(ex.getMessage());
         }
     }
-    public void fileReader() {
-        try(FileReader reader = new FileReader("rec.txt"))
-        {
-            // читаем посимвольно
-            int c;
-            while((c=reader.read())!=-1){
-                System.out.print((char)c);
-            }
-        }
-        catch(IOException ex){
+    public int fileReader() {
+        try {
+            final DataInputStream dis = new DataInputStream(
+                    new FileInputStream( "rec.txt"));
+            final byte[] bytes = new byte[dis.available()];
+            dis.readFully(bytes);
+            final String fileContents = new String(bytes, 0, bytes.length);
+            int k = Integer.parseInt(fileContents);
+            return k;
 
-            System.out.println(ex.getMessage());
+        } catch (FileNotFoundException ex) {
+            return 0;
+
+        } catch (IOException ex) {
+            return 0;
         }
     }
 

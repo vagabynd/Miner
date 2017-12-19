@@ -8,13 +8,13 @@ import java.util.Random;
 import java.util.Timer;
 
 public class Miner extends JFrame {
-    private int bombsNumber, size, markedCount, time;
+    private int bombsNumber, size, markedCount, time, lastTime;
     private final int CELL_SIZE = 50;
     private JCell[][] field;
     JLabel mark = new JLabel("  F - " + markedCount);
     JLabel timerLabel = new TimerLabel(new Timer());
     TimerLabel time1 = new TimerLabel(new Timer());
-
+    FileApps file = new FileApps();
 
     public Miner(int size, int number) {
         this.size = size;
@@ -80,8 +80,15 @@ public class Miner extends JFrame {
             for (int y = 0; y < size; y++)
                 if (field[x][y].isBomb() && !field[x][y].isMarked())
                     return;
-
-        showDialog("Congratulations!");
+        time = time1.getTime();
+        lastTime = file.fileReader();
+        if (time <= lastTime) {
+            showDialog("Congratulations. Новый Рекорд: " + time + " секунд");
+            file.fileWriter(time);
+        }
+        else {
+            showDialog("Congratulations. Рекорд: " + lastTime + " секунд");
+        }
     }
 
     private void openBombs() {
@@ -89,8 +96,9 @@ public class Miner extends JFrame {
             for (int y = 0; y < size; y++)
                 if (field[x][y].isBomb())
                     field[x][y].setText("x");
-        time = time1.getTime();
         showDialog("Game over.");
+
+
     }
 
     private void showDialog(String message) {
